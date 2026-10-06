@@ -1,0 +1,43 @@
+[package]
+name = "abg-game"
+version = "0.1.0"
+edition = "2021"
+
+# Same graphics stack and versions as the Fortnite Rust workspace, so everything builds from the local cargo cache.
+[dependencies]
+wgpu = { version = "30.0.1", default-features = false, features = ["std", "parking_lot", "dx12", "vulkan", "wgsl"] }
+winit = "0.30"
+pollster = "1"
+bytemuck = { version = "1", features = ["derive"] }
+glam = "0.32.1"
+image = { version = "0.25.10", default-features = false, features = ["png"] }
+# The asset readers (models, archives, textures) live in the abgtool library next to this crate.
+abgtool = { path = "../abgtool" }
+# Audio: pure-Rust mp3 decoding (symphonia) + cpal output. The game's music and sfx are all mp3.
+rodio = { version = "0.22.2", default-features = false, features = ["playback", "mp3"] }
+roxmltree = "0.21.1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 1
+
+# Fast iteration: `cargo run --profile fast`. Dependencies stay fully optimised, only this crate rebuilds.
+[profile.fast]
+inherits = "release"
+opt-level = 2
+lto = false
+codegen-units = 16
+incremental = true
+strip = false
+debug = false
+
+[profile.fast.package."*"]
+opt-level = 3
+codegen-units = 16
+incremental = false

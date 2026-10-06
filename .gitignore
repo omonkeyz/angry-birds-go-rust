@@ -1,0 +1,25 @@
+# Build output
+target*/
+**/target*/
+
+# Original game data and APKs: copyrighted, not part of this repo (see README "Getting the data")
+assets/
+assets291/
+assets292/
+apk*/
+apk_extracted/
+apk291_extracted/
+game_bomb_tmp/
+
+# Decompiles / Ghidra projects are never committed
+*.gpr
+*.rep/
+decomp*/
+libABK*.so
+*.so
+
+# Screenshots and local saves
+game/captures/
+*.sav
+*.png
+!docs/*.png
